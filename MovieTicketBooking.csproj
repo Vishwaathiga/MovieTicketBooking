@@ -22,7 +22,6 @@
   <ItemGroup>
     <Folder Include="DTOs\Bookings\" />
     <Folder Include="DTOs\Shows\" />
-    <Folder Include="DTOs\Seats\" />
   </ItemGroup>
 
 </Project>

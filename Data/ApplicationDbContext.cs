@@ -17,6 +17,8 @@ public class ApplicationDbContext : DbContext
 
     public DbSet<Screen> Screens { get; set; }
 
+    public DbSet<Seat> Seats { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -29,6 +31,21 @@ public class ApplicationDbContext : DbContext
             .HasOne(s => s.Theatre)
             .WithMany()
             .HasForeignKey(s => s.TheatreId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Seat>()
+            .HasIndex(s => new
+            {
+                s.ScreenId,
+                s.RowName,
+                s.SeatNumber
+            })
+            .IsUnique();
+
+        modelBuilder.Entity<Seat>()
+            .HasOne(s => s.Screen)
+            .WithMany()
+            .HasForeignKey(s => s.ScreenId)
             .OnDelete(DeleteBehavior.Restrict);
     }
 }

@@ -163,4 +163,5 @@ E:\HCLTasks\MovieTicketBooking\MovieTicketBooking\bin\Debug\net10.0\runtimes\osx
 E:\HCLTasks\MovieTicketBooking\MovieTicketBooking\bin\Debug\net10.0\runtimes\win-arm64\native\msalruntime_arm64.dll
 E:\HCLTasks\MovieTicketBooking\MovieTicketBooking\bin\Debug\net10.0\runtimes\win-x64\native\msalruntime.dll
 E:\HCLTasks\MovieTicketBooking\MovieTicketBooking\bin\Debug\net10.0\runtimes\win-x86\native\msalruntime_x86.dll
+E:\HCLTasks\MovieTicketBooking\MovieTicketBooking\obj\Debug\net10.0\MovieTicketBooking.sourcelink.json
 E:\HCLTasks\MovieTicketBooking\MovieTicketBooking\obj\Debug\net10.0\staticwebassets.upToDateCheck.txt

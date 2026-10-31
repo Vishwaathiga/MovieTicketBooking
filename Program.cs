@@ -16,6 +16,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddScoped<IMovieRepository, MovieRepository>();
 builder.Services.AddScoped<IMovieService, MovieService>();
 
+builder.Services.AddScoped<ITheatreRepository, TheatreRepository>();
+builder.Services.AddScoped<ITheatreService, TheatreService>();
+
 var app = builder.Build();
 
 app.UseHttpsRedirection();

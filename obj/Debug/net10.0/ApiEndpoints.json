@@ -111,6 +111,85 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "MovieTicketBooking.Controllers.TheatresController",
+    "Method": "Create",
+    "RelativePath": "api/theatres",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "MovieTicketBooking.DTOs.Theatres.CreateTheatreDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MovieTicketBooking.Controllers.TheatresController",
+    "Method": "GetAll",
+    "RelativePath": "api/theatres",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MovieTicketBooking.Controllers.TheatresController",
+    "Method": "GetById",
+    "RelativePath": "api/theatres/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MovieTicketBooking.Controllers.TheatresController",
+    "Method": "Update",
+    "RelativePath": "api/theatres/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "MovieTicketBooking.DTOs.Theatres.UpdateTheatreDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MovieTicketBooking.Controllers.TheatresController",
+    "Method": "Delete",
+    "RelativePath": "api/theatres/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "MovieTicketBooking.Controllers.WeatherForecastController",
     "Method": "Get",
     "RelativePath": "WeatherForecast",

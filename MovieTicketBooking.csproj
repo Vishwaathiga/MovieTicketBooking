@@ -24,7 +24,6 @@
     <Folder Include="DTOs\Shows\" />
     <Folder Include="DTOs\Seats\" />
     <Folder Include="DTOs\Screens\" />
-    <Folder Include="DTOs\Theatres\" />
   </ItemGroup>
 
 </Project>

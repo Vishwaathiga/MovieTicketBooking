@@ -23,7 +23,6 @@
     <Folder Include="DTOs\Bookings\" />
     <Folder Include="DTOs\Shows\" />
     <Folder Include="DTOs\Seats\" />
-    <Folder Include="DTOs\Screens\" />
   </ItemGroup>
 
 </Project>

@@ -21,7 +21,6 @@
 
   <ItemGroup>
     <Folder Include="DTOs\Bookings\" />
-    <Folder Include="DTOs\Shows\" />
   </ItemGroup>
 
 </Project>

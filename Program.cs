@@ -25,6 +25,12 @@ builder.Services.AddScoped<IScreenService, ScreenService>();
 builder.Services.AddScoped<ISeatRepository, SeatRepository>();
 builder.Services.AddScoped<ISeatService, SeatService>();
 
+builder.Services.AddScoped<IShowRepository, ShowRepository>();
+builder.Services.AddScoped<IShowSeatRepository, ShowSeatRepository>();
+builder.Services.AddScoped<IShowService, ShowService>();
+
+
+
 var app = builder.Build();
 
 app.UseHttpsRedirection();

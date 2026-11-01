@@ -17,6 +17,8 @@ namespace MovieTicketBooking.Data
         public DbSet<Seat> Seats { get; set; }
         public DbSet<Show> Shows { get; set; }
         public DbSet<ShowSeat> ShowSeats { get; set; }
+        public DbSet<Booking> Bookings { get; set; }
+        public DbSet<BookingSeat> BookingSeats { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -85,6 +87,34 @@ namespace MovieTicketBooking.Data
                 .WithMany()
                 .HasForeignKey(ss => ss.SeatId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            // Booking configuration
+            modelBuilder.Entity<Booking>()
+                .HasIndex(b => b.BookingReference)
+                .IsUnique();
+
+            modelBuilder.Entity<Booking>()
+                .HasOne(b => b.Show)
+                .WithMany()
+                .HasForeignKey(b => b.ShowId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // BookingSeat configuration
+            modelBuilder.Entity<BookingSeat>()
+                .HasOne(bs => bs.Booking)
+                .WithMany(b => b.BookingSeats)
+                .HasForeignKey(bs => bs.BookingId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<BookingSeat>()
+                .HasOne(bs => bs.ShowSeat)
+                .WithMany()
+                .HasForeignKey(bs => bs.ShowSeatId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<BookingSeat>()
+           .HasIndex(bs => new { bs.BookingId, bs.ShowSeatId })
+           .IsUnique();
         }
     }
 }

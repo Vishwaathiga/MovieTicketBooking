@@ -20,14 +20,18 @@ namespace MovieTicketBooking.Repositories
             return await _context.ShowSeats
                 .Include(ss => ss.Seat)
                 .Where(ss => ss.ShowId == showId)
-                .OrderBy(ss => ss.Seat!.RowName)
-                .ThenBy(ss => ss.Seat!.SeatNumber)
                 .ToListAsync();
         }
 
         public async Task AddRangeAsync(List<ShowSeat> showSeats)
         {
             await _context.ShowSeats.AddRangeAsync(showSeats);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateRangeAsync(List<ShowSeat> showSeats)
+        {
+            _context.ShowSeats.UpdateRange(showSeats);
             await _context.SaveChangesAsync();
         }
     }

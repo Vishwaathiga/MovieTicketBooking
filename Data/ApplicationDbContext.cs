@@ -1,12 +1,14 @@
 ﻿
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using MovieTicketBooking.Models;
 
 namespace MovieTicketBooking.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        public ApplicationDbContext(
+            DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
         }
@@ -113,8 +115,12 @@ namespace MovieTicketBooking.Data
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<BookingSeat>()
-           .HasIndex(bs => new { bs.BookingId, bs.ShowSeatId })
-           .IsUnique();
+                .HasIndex(bs => new { bs.BookingId, bs.ShowSeatId })
+                .IsUnique();
+
+            modelBuilder.Entity<Booking>()
+    .Property(b => b.TotalAmount)
+    .HasPrecision(18, 2);
         }
     }
 }

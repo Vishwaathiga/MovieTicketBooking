@@ -1,0 +1,162 @@
+
+<div class="booking-page">
+
+  <header class="booking-navbar">
+    <a class="brand" routerLink="/home">
+      <span class="brand-icon">▶</span>
+      CINE<span>VERSE</span>
+    </a>
+
+    <button class="back-button" type="button" (click)="goBack()">
+      ← Back to Shows
+    </button>
+  </header>
+
+  <main class="booking-container">
+
+    <div class="page-heading">
+      <p class="eyebrow">YOUR MOVIE EXPERIENCE</p>
+     <h1>
+  {{ movieTitle }}
+  <span>— Select Your Seats</span>
+</h1>
+      <p class="subtitle">
+        Choose your favourite seats and get ready for the big screen.
+      </p>
+    </div>
+
+    <div class="loading" *ngIf="isLoading">
+      Loading seats...
+    </div>
+
+    <div class="error-message" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </div>
+
+    <div class="success-message" *ngIf="successMessage">
+      {{ successMessage }}
+    </div>
+
+    <div class="seat-layout" *ngIf="!isLoading">
+
+      <div class="screen-section">
+        <div class="screen"></div>
+        <p>SCREEN</p>
+      </div>
+
+      <div class="seat-legend">
+        <div>
+          <span class="legend-seat available"></span>
+          Available
+        </div>
+
+        <div>
+          <span class="legend-seat selected"></span>
+          Selected
+        </div>
+
+        <div>
+          <span class="legend-seat booked"></span>
+          Booked
+        </div>
+      </div>
+
+      <div class="seat-rows">
+
+        <div class="seat-row" *ngFor="let row of rows">
+
+          <span class="row-label">{{ row }}</span>
+
+          <div class="row-seats">
+
+            <button
+              type="button"
+              *ngFor="let seat of getSeatsForRow(row)"
+              class="seat"
+              [class.available]="seat.status === 'Available'"
+              [class.booked]="seat.status !== 'Available'"
+              [class.selected]="isSelected(seat.showSeatId)"
+              [class.premium]="seat.seat.seatType === 'Premium'"
+              [disabled]="seat.status !== 'Available'"
+              (click)="toggleSeat(seat)"
+              [title]="row + seat.seat.seatNumber + ' - ' + seat.seat.seatType">
+
+              {{ seat.seat.seatNumber }}
+
+            </button>
+
+          </div>
+
+          <span class="row-label">{{ row }}</span>
+
+        </div>
+
+      </div>
+
+      <div class="screen-caption">
+        All eyes on the screen. Enjoy the show!
+      </div>
+
+    </div>
+
+    <section class="booking-summary" *ngIf="!isLoading">
+
+      <div class="summary-heading">
+        <div>
+          <p class="eyebrow">BOOKING SUMMARY</p>
+          <h2>Your Selection</h2>
+        </div>
+
+        <span class="selected-count">
+          {{ selectedSeats.length }} Seats
+        </span>
+      </div>
+
+      <div class="selected-seat-list" *ngIf="selectedSeats.length > 0">
+        <span *ngFor="let seat of selectedSeats">
+          {{ seat.seat.rowName }}{{ seat.seat.seatNumber }}
+        </span>
+      </div>
+
+      <p class="no-selection" *ngIf="selectedSeats.length === 0">
+        Select seats from the layout above.
+      </p>
+
+      <div class="summary-divider"></div>
+
+      <div class="price-row">
+        <span>Ticket Price</span>
+        <strong>₹{{ ticketPrice }}</strong>
+      </div>
+
+      <div class="price-row total">
+        <span>Total Amount</span>
+        <strong>₹{{ totalAmount }}</strong>
+      </div>
+
+      <div class="customer-field">
+        <label for="customerName">Customer Name</label>
+
+        <input
+          id="customerName"
+          type="text"
+          [(ngModel)]="customerName"
+          placeholder="Enter your name">
+      </div>
+
+      <button
+        type="button"
+        class="confirm-button"
+        [disabled]="selectedSeats.length === 0 || isBooking"
+        (click)="bookTickets()">
+
+        {{ isBooking ? 'Processing Booking...' : 'Confirm Booking' }}
+
+        <span *ngIf="!isBooking">→</span>
+      </button>
+
+    </section>
+
+  </main>
+
+</div>

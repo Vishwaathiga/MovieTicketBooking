@@ -1,0 +1,142 @@
+
+<div class="auth-page">
+
+  <div class="auth-background"></div>
+
+  <div class="auth-wrapper">
+
+    <div class="brand-section">
+      <div class="brand-icon">▶</div>
+      <h1>CINE<span>VERSE</span></h1>
+      <p>Your next movie experience starts here.</p>
+    </div>
+
+    <div class="auth-card">
+
+      <div class="card-heading">
+        <p class="eyebrow">WELCOME TO THE CINEMA</p>
+
+        <h2>
+          {{ isLogin ? 'Welcome back' : 'Create your account' }}
+        </h2>
+
+        <p class="subtitle">
+          {{
+            isLogin
+              ? 'Sign in to continue your movie journey.'
+              : 'Join us and discover your next favourite movie.'
+          }}
+        </p>
+      </div>
+
+      <div class="mode-switch">
+        <button
+          type="button"
+          [class.active]="isLogin"
+          (click)="isLogin = true; clearMessages()">
+          Login
+        </button>
+
+        <button
+          type="button"
+          [class.active]="!isLogin"
+          (click)="isLogin = false; clearMessages()">
+          Register
+        </button>
+      </div>
+
+      <form #authForm="ngForm" (ngSubmit)="submitForm()">
+
+        <div class="form-group" *ngIf="!isLogin">
+          <label for="fullName">Full Name</label>
+
+          <input
+            id="fullName"
+            type="text"
+            name="fullName"
+            [(ngModel)]="fullName"
+            placeholder="Enter your full name"
+            required
+            minlength="2">
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email Address</label>
+
+          <input
+            id="email"
+            type="email"
+            name="email"
+            [(ngModel)]="email"
+            placeholder="you@example.com"
+            required
+            email>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+
+          <div class="password-field">
+            <input
+              id="password"
+              [type]="showPassword ? 'text' : 'password'"
+              name="password"
+              [(ngModel)]="password"
+              placeholder="Enter your password"
+              required
+              minlength="6">
+
+            <button
+              type="button"
+              class="password-toggle"
+              (click)="showPassword = !showPassword">
+              {{ showPassword ? 'Hide' : 'Show' }}
+            </button>
+          </div>
+        </div>
+
+        <div class="error-message" *ngIf="errorMessage">
+          {{ errorMessage }}
+        </div>
+
+        <div class="success-message" *ngIf="message">
+          {{ message }}
+        </div>
+
+        <button
+          type="submit"
+          class="submit-button"
+          [disabled]="authForm.invalid || isLoading">
+
+          <span *ngIf="!isLoading">
+            {{ isLogin ? 'Sign In' : 'Create Account' }}
+          </span>
+
+          <span *ngIf="isLoading">
+            Please wait...
+          </span>
+
+          <span class="button-arrow" *ngIf="!isLoading">→</span>
+        </button>
+
+      </form>
+
+      <div class="bottom-text">
+        <span>
+          {{ isLogin ? "Don't have an account?" : 'Already have an account?' }}
+        </span>
+
+        <button type="button" (click)="switchMode()">
+          {{ isLogin ? 'Create account' : 'Sign in' }}
+        </button>
+      </div>
+
+    </div>
+
+    <p class="footer-text">
+      © 2026 CINEVERSE · YOUR CINEMA EXPERIENCE
+    </p>
+
+  </div>
+
+</div>

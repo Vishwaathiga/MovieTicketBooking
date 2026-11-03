@@ -1,0 +1,162 @@
+
+<div class="home-page">
+
+  <header class="navbar">
+    <a class="brand" routerLink="/home">
+      <span class="brand-icon">▶</span>
+      CINE<span>VERSE</span>
+    </a>
+
+    <nav class="nav-links">
+      <a class="active" routerLink="/home">Home</a>
+      <a href="#shows">Shows</a>
+      <a routerLink="/my-bookings">My Bookings</a>
+    </nav>
+
+    <div class="nav-actions">
+      <span class="user-label">Welcome, Movie Lover</span>
+
+      <button
+        class="logout-button"
+        type="button"
+        (click)="signOut()">
+        Sign Out
+      </button>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-content">
+      <p class="hero-tag">YOUR CINEMA EXPERIENCE</p>
+
+      <h1>
+        Every Story.<br>
+        <span>One Big Screen.</span>
+      </h1>
+
+      <p class="hero-description">
+        Discover the latest movies, choose your favourite show,
+        and make every movie night unforgettable.
+      </p>
+
+      <a href="#shows" class="hero-button">
+        Explore Shows <span>→</span>
+      </a>
+    </div>
+
+    <div class="hero-decoration">
+      <div class="ticket-shape">
+        <span class="ticket-play">▶</span>
+        <span class="ticket-text">CINEMA</span>
+        <span class="ticket-subtext">YOUR MOMENT</span>
+      </div>
+    </div>
+  </section>
+
+  <main id="shows" class="shows-section">
+
+    <div class="section-heading">
+      <div>
+        <p class="section-tag">NOW SHOWING</p>
+        <h2>Find Your Next <span>Favourite</span></h2>
+      </div>
+
+      <div class="show-count">
+        {{ shows.length }} Available Shows
+      </div>
+    </div>
+
+    <div class="loading" *ngIf="isLoading">
+      <div class="loader"></div>
+      <p>Discovering movies...</p>
+    </div>
+
+    <div class="error-message" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </div>
+
+    <div
+      class="empty-state"
+      *ngIf="!isLoading && !errorMessage && shows.length === 0">
+
+      <div class="empty-icon">🎬</div>
+      <h3>No Shows Available</h3>
+      <p>
+        There are no available shows right now.
+        Please check again later.
+      </p>
+    </div>
+
+    <div
+      class="shows-grid"
+      *ngIf="!isLoading && shows.length > 0">
+
+      <article
+        class="show-card"
+        *ngFor="let show of shows">
+
+        <div class="movie-art">
+          <div class="art-glow"></div>
+          <div class="movie-symbol">▶</div>
+
+          <span class="movie-badge">NOW SHOWING</span>
+
+          <div class="movie-art-title">
+            <span class="art-small">CINEVERSE PRESENTS</span>
+            <h3>{{ show.movieTitle }}</h3>
+          </div>
+        </div>
+
+        <div class="show-details">
+
+          <div class="movie-title-row">
+            <h3>{{ show.movieTitle }}</h3>
+            <span class="price">₹{{ show.ticketPrice }}</span>
+          </div>
+
+          <div class="detail-row">
+            <span class="detail-icon">▣</span>
+            <span>{{ show.screenName }}</span>
+          </div>
+
+          <div class="detail-row">
+            <span class="detail-icon">◷</span>
+            <span>
+              {{ show.startTime | date:'EEE, MMM d, y · h:mm a' }}
+            </span>
+          </div>
+
+          <div class="detail-row">
+            <span class="detail-icon">◴</span>
+            <span>
+              Ends {{ show.endTime | date:'h:mm a' }}
+            </span>
+          </div>
+
+          <button
+            class="book-button"
+            type="button"
+            [routerLink]="['/booking', show.showId]">
+
+            Book Tickets <span>→</span>
+          </button>
+
+        </div>
+
+      </article>
+
+    </div>
+
+  </main>
+
+  <footer class="footer">
+    <div class="footer-brand">
+      CINE<span>VERSE</span>
+    </div>
+
+    <p>Bringing stories to life, one ticket at a time.</p>
+
+    <span class="copyright">© 2026 CINEVERSE</span>
+  </footer>
+
+</div>

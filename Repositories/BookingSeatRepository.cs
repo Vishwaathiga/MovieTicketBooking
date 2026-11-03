@@ -19,7 +19,7 @@ namespace MovieTicketBooking.Repositories
         {
             return await _context.BookingSeats
                 .Include(bs => bs.ShowSeat)
-                    .ThenInclude(ss => ss!.Seat)
+                .ThenInclude(ss => ss!.Seat)
                 .Where(bs => bs.BookingId == bookingId)
                 .ToListAsync();
         }

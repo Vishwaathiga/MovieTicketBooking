@@ -1,0 +1,87 @@
+
+<div class="my-bookings-container">
+
+  <div class="page-header">
+    <h1>My Bookings</h1>
+    <p>View and manage your movie tickets</p>
+  </div>
+
+  <div class="message error-message" *ngIf="errorMessage">
+    {{ errorMessage }}
+  </div>
+
+  <div class="message success-message" *ngIf="successMessage">
+    {{ successMessage }}
+  </div>
+
+  <div class="loading" *ngIf="isLoading">
+    Loading your bookings...
+  </div>
+
+  <div class="empty-state"
+       *ngIf="!isLoading && bookings.length === 0">
+    <h2>No Bookings Found</h2>
+    <p>You haven't booked any movie tickets yet.</p>
+  </div>
+
+  <div class="booking-list" *ngIf="!isLoading && bookings.length > 0">
+
+    <div class="booking-card" *ngFor="let booking of bookings">
+
+      <div class="booking-header">
+        <div>
+          <h2>{{ booking.movieTitle }}</h2>
+          <p class="booking-reference">
+            Booking Reference: {{ booking.bookingReference }}
+          </p>
+        </div>
+
+        <span class="status"
+              [class.cancelled]="booking.status === 'Cancelled'">
+          {{ booking.status }}
+        </span>
+      </div>
+
+      <div class="booking-details">
+
+        <div class="detail">
+          <span class="label">Theatre</span>
+          <span>{{ booking.theatreName }}</span>
+        </div>
+
+        <div class="detail">
+          <span class="label">Screen</span>
+          <span>{{ booking.screenName }}</span>
+        </div>
+
+        <div class="detail">
+          <span class="label">Show Time</span>
+          <span>{{ booking.showStartTime | date:'medium' }}</span>
+        </div>
+
+        <div class="detail">
+          <span class="label">Seats</span>
+          <span>{{ booking.seatNames?.join(', ') }}</span>
+        </div>
+
+        <div class="detail">
+          <span class="label">Total Amount</span>
+          <span class="amount">
+            ₹{{ booking.totalAmount }}
+          </span>
+        </div>
+
+      </div>
+
+     <div class="booking-actions" *ngIf="booking.status !== 'Cancelled'">
+  <button
+    class="cancel-button"
+    (click)="cancelBooking(booking.bookingId)">
+    Cancel Booking
+  </button>
+</div>
+    </div>
+
+  </div>
+
+</div>

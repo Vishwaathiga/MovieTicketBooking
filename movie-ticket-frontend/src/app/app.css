@@ -1,0 +1,32 @@
+
+.container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+h1 {
+  text-align: center;
+  color: #1f2937;
+}
+
+h2 {
+  color: #374151;
+}
+
+.show-card {
+  background: #f3f4f6;
+  padding: 20px;
+  margin: 20px 0;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+}
+
+.show-card h3 {
+  color: #2563eb;
+}
+
+.error {
+  color: red;
+}

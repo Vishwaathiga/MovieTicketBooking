@@ -95,6 +95,9 @@ namespace MovieTicketBooking.Services
             var selectedShowSeats = showSeats
                 .Where(ss => dto.ShowSeatIds.Contains(ss.ShowSeatId))
                 .ToList();
+            Console.WriteLine($"Requested seats: {dto.ShowSeatIds.Count}");
+            Console.WriteLine($"Selected seats found: {selectedShowSeats.Count}");
+            Console.WriteLine($"Booking total: {show.TicketPrice * selectedShowSeats.Count}");
 
             if (selectedShowSeats.Count != dto.ShowSeatIds.Count)
             {

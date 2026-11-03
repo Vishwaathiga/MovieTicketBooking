@@ -1,4 +1,5 @@
 
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -14,6 +15,17 @@ using MovieTicketBooking.Services.Interfaces;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
+
+// CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngular", policy =>
+    {
+        policy.WithOrigins("http://localhost:4200")
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
 
 // Database
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -85,11 +97,15 @@ var app = builder.Build();
 
 app.UseHttpsRedirection();
 
+// CORS must run before authentication and authorization
+app.UseCors("AllowAngular");
+
 // JWT authentication must run before authorization
 app.UseAuthentication();
 app.UseAuthorization();
 
 await RoleSeeder.SeedRolesAndAdminAsync(app.Services);
+
 app.MapControllers();
 
 app.Run();

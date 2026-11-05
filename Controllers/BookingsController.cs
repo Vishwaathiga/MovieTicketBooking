@@ -14,16 +14,21 @@ namespace MovieTicketBooking.Controllers
     public class BookingsController : ControllerBase
     {
         private readonly IBookingService _bookingService;
+        private readonly IAuthorizationService _authorizationService;
 
-        public BookingsController(IBookingService bookingService)
+        public BookingsController(
+            IBookingService bookingService,
+            IAuthorizationService authorizationService)
         {
             _bookingService = bookingService;
+            _authorizationService = authorizationService;
         }
 
         private string? GetCurrentUserEmail()
         {
             return User.FindFirstValue(ClaimTypes.Email)
-                ?? User.FindFirstValue("email");
+                ?? User.FindFirstValue("email")
+                ?? User.FindFirstValue("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress");
         }
 
         private bool IsAdmin()
@@ -52,13 +57,16 @@ namespace MovieTicketBooking.Controllers
                 return NotFound("Booking not found.");
             }
 
-            if (!IsAdmin() &&
-                !string.Equals(
-                    booking.CustomerEmail,
-                    GetCurrentUserEmail(),
-                    StringComparison.OrdinalIgnoreCase))
+            if (!IsAdmin())
             {
-                return Forbid();
+                var authorizationResult =
+                    await _authorizationService.AuthorizeAsync(
+                        User, booking, "BookingOwner");
+
+                if (!authorizationResult.Succeeded)
+                {
+                    return Forbid();
+                }
             }
 
             return Ok(booking);
@@ -77,13 +85,16 @@ namespace MovieTicketBooking.Controllers
                 return NotFound("Booking not found.");
             }
 
-            if (!IsAdmin() &&
-                !string.Equals(
-                    booking.CustomerEmail,
-                    GetCurrentUserEmail(),
-                    StringComparison.OrdinalIgnoreCase))
+            if (!IsAdmin())
             {
-                return Forbid();
+                var authorizationResult =
+                    await _authorizationService.AuthorizeAsync(
+                        User, booking, "BookingOwner");
+
+                if (!authorizationResult.Succeeded)
+                {
+                    return Forbid();
+                }
             }
 
             return Ok(booking);
@@ -154,13 +165,17 @@ namespace MovieTicketBooking.Controllers
                     return NotFound("Booking not found.");
                 }
 
-                if (!IsAdmin() &&
-                    !string.Equals(
-                        booking.CustomerEmail,
-                        GetCurrentUserEmail(),
-                        StringComparison.OrdinalIgnoreCase))
+                if (!IsAdmin())
                 {
-                    return Forbid();
+                    var authorizationResult =
+                        await _authorizationService.AuthorizeAsync(
+                            User, booking, "BookingOwner");
+                    Console.WriteLine("AUTHENTICATED: " + User.Identity?.IsAuthenticated);
+                    Console.WriteLine("AUTHORIZATION SUCCESS: " + authorizationResult.Succeeded);
+                    if (!authorizationResult.Succeeded)
+                    {
+                        return Forbid();
+                    }
                 }
 
                 var result = await _bookingService.CancelAsync(id);

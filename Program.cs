@@ -1,7 +1,7 @@
 
-using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -11,10 +11,15 @@ using MovieTicketBooking.Repositories;
 using MovieTicketBooking.Repositories.Interfaces;
 using MovieTicketBooking.Services;
 using MovieTicketBooking.Services.Interfaces;
+using MovieTicketBooking.Authorization;
+using MovieTicketBooking.Authorization.Requirements;
+using MovieTicketBooking.Middleware;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
+builder.Services.AddOpenApi();
 
 // CORS
 builder.Services.AddCors(options =>
@@ -69,7 +74,16 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-builder.Services.AddAuthorization();
+// Custom Resource-Based Authorization
+builder.Services.AddScoped<IAuthorizationHandler, BookingOwnerHandler>();
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("BookingOwner", policy =>
+    {
+        policy.AddRequirements(new BookingOwnerRequirement());
+    });
+});
 
 // Repositories and Services
 builder.Services.AddScoped<IMovieRepository, MovieRepository>();
@@ -95,17 +109,43 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 
 var app = builder.Build();
 
+// 1. HTTPS Redirection
 app.UseHttpsRedirection();
 
-// CORS must run before authentication and authorization
+// 2. Routing
+app.UseRouting();
+
+// 3. Endpoint Metadata Diagnostics
+if (app.Environment.IsDevelopment())
+{
+    app.UseMiddleware<EndpointMetadataMiddleware>();
+}
+
+// 4. CORS
 app.UseCors("AllowAngular");
 
-// JWT authentication must run before authorization
+// 5. Authentication
 app.UseAuthentication();
+
+// 6. Authentication and Authorization Diagnostics
+if (app.Environment.IsDevelopment())
+{
+    app.UseMiddleware<AuthenticationDiagnosticsMiddleware>();
+    app.UseMiddleware<AuthorizationDiagnosticsMiddleware>();
+}
+
+// 7. Authorization
 app.UseAuthorization();
 
+// 8. Seed Roles and Admin
 await RoleSeeder.SeedRolesAndAdminAsync(app.Services);
 
+// 9. Map OpenAPI and Scalar
+app.MapOpenApi();
+app.MapScalarApiReference();
+
+// 10. Map Controllers
 app.MapControllers();
 
+// 10. Run Application
 app.Run();
